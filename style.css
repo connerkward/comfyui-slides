@@ -156,7 +156,7 @@
   z-index: 1;
 }
 /* Ambient glow toggle — uncomment to disable */
-/* .sw::before, .sw::after, .chap::before { opacity: 0 !important; } */
+.sw::before, .sw::after, .chap::before { opacity: 0 !important; }
 
 /* ─── Slide inner — with corner brackets ─── */
 .si {
