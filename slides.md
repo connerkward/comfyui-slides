@@ -3,7 +3,7 @@ theme: default
 title: ComfyUI Masterclass
 colorSchema: dark
 highlighter: shiki
-transition: mech
+transition: mech-fwd | mech-bwd
 layout: full
 ---
 

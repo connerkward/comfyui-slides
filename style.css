@@ -155,6 +155,8 @@
   pointer-events: none;
   z-index: 1;
 }
+/* Ambient glow toggle — uncomment to disable */
+/* .sw::before, .sw::after, .chap::before { opacity: 0 !important; } */
 
 /* ─── Slide inner — with corner brackets ─── */
 .si {
@@ -272,11 +274,11 @@
 
 /* ─── Typewriter ─── */
 @keyframes tl { from { opacity:0; } to { opacity:1; } }
-.tl { display:inline-block; opacity:0; animation:tl 0.12s ease-out forwards; }
+.tl { display:inline-block; opacity:0; animation:tl 0.18s ease-out forwards; }
 
 /* ─── Animations ─── */
 @keyframes fi { from { opacity:0; } to { opacity:1; } }
-.au   { animation:fi 0.7s ease both; }
+.au   { animation:fi 0.5s ease both; }
 .au-1 { animation-delay:0.08s; }
 .au-2 { animation-delay:0.18s; }
 .au-3 { animation-delay:0.30s; }
@@ -284,13 +286,14 @@
 .au-5 { animation-delay:0.58s; }
 
 /* ─── Mechanical monitor slide transition ─── */
+/* Usage in frontmatter: transition: mech-fwd | mech-bwd */
 /* Forward: new slide drives in from right, old punches out left */
-.mech-enter-active  { transition: transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease; }
-.mech-leave-active  { transition: transform 0.38s cubic-bezier(0.64,0,0.78,0), opacity 0.28s ease; position: absolute !important; width: 100%; }
-.mech-enter-from    { transform: translateX(100%); opacity: 0.4; }
-.mech-leave-to      { transform: translateX(-12%); opacity: 0; }
-/* Reverse: going back, new slide comes from left */
-.mech-reverse-enter-active  { transition: transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease; }
-.mech-reverse-leave-active  { transition: transform 0.38s cubic-bezier(0.64,0,0.78,0), opacity 0.28s ease; position: absolute !important; width: 100%; }
-.mech-reverse-enter-from    { transform: translateX(-100%); opacity: 0.4; }
-.mech-reverse-leave-to      { transform: translateX(12%); opacity: 0; }
+.mech-fwd-enter-active { transition: transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease; }
+.mech-fwd-leave-active { transition: transform 0.38s cubic-bezier(0.64,0,0.78,0), opacity 0.28s ease; position: absolute !important; width: 100%; }
+.mech-fwd-enter-from   { transform: translateX(100%); opacity: 0.4; }
+.mech-fwd-leave-to     { transform: translateX(-12%); opacity: 0; }
+/* Backward: new slide drives in from left, old punches out right */
+.mech-bwd-enter-active { transition: transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease; }
+.mech-bwd-leave-active { transition: transform 0.38s cubic-bezier(0.64,0,0.78,0), opacity 0.28s ease; position: absolute !important; width: 100%; }
+.mech-bwd-enter-from   { transform: translateX(-100%); opacity: 0.4; }
+.mech-bwd-leave-to     { transform: translateX(12%); opacity: 0; }
