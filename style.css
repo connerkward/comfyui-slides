@@ -542,6 +542,12 @@
 .step-logos img { height:14px; width:auto; opacity:0.9; }
 .step-logos--all img { height:12px; opacity:0.75; }
 
+/* HUDDLE UP combo: cinematic mesh backdrop + readable step boxes */
+.huddle-slide .three-scene { opacity: 0.28; }
+.huddle-slide .step { background: rgba(5,55,255,0.78); border:1px solid var(--bhi); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.huddle-slide .step-hi { background: rgba(5,55,255,0.82); }
+.huddle-slide .step-arr { color: var(--wh); text-shadow: 0 0 6px rgba(5,55,255,0.9); }
+
 /* ─── Warn stripe — restyled as soft punku rule ─── */
 .warn-stripe { height:4px; background:repeating-linear-gradient(-45deg, var(--ac) 0, var(--ac) 5px, transparent 5px, transparent 10px); opacity:0.7; }
 
