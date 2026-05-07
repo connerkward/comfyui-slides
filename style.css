@@ -613,3 +613,97 @@
 .mech-bwd-leave-active { transition: transform 0.38s cubic-bezier(0.64,0,0.78,0), opacity 0.28s ease; position: absolute !important; width: 100%; }
 .mech-bwd-enter-from   { transform: translateX(-100%); opacity: 0.4; }
 .mech-bwd-leave-to     { transform: translateX(12%); opacity: 0; }
+
+/* ─── Node card (FEATURES section technical view) ─── */
+.node-row {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.node {
+  display:flex;
+  flex-direction:column;
+  border:1px solid var(--b);
+  background:rgba(255,255,255,0.025);
+  width:280px;
+  font-family:var(--fb);
+  position:relative;
+}
+.node::before, .node::after {
+  content:"";
+  position:absolute;
+  width:8px;
+  height:8px;
+  border:1px solid var(--ac);
+}
+.node::before { top:-4px; left:-4px; border-right:none; border-bottom:none; }
+.node::after  { bottom:-4px; right:-4px; border-left:none; border-top:none; }
+.node-bar {
+  display:flex;
+  align-items:center;
+  gap:0.55rem;
+  padding:0.55rem 0.85rem;
+  border-bottom:1px solid var(--b);
+  background:rgba(255,255,255,0.05);
+}
+.node-bar-stripe {
+  width:3px;
+  height:0.95rem;
+  background:var(--ac);
+}
+.node-bar-t {
+  font-family:var(--fd);
+  font-size:0.85rem;
+  color:var(--wh);
+  letter-spacing:0.01em;
+}
+.node-bar-id {
+  margin-left:auto;
+  font-size:0.52rem;
+  letter-spacing:0.16em;
+  color:var(--mut);
+}
+.node-ports {
+  display:flex;
+  flex-direction:column;
+  padding:0.5rem 0;
+}
+.port {
+  display:flex;
+  align-items:center;
+  gap:0.55rem;
+  font-size:0.74rem;
+  padding:0.25rem 0.85rem;
+  color:var(--sub);
+}
+.port-out {
+  flex-direction:row-reverse;
+}
+.port-dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--ac);
+  flex-shrink:0;
+  box-shadow:0 0 0 2px rgba(5, 55, 255, 0.18);
+}
+.port-spacer { height:0.35rem; }
+.node-meta {
+  display:grid;
+  grid-template-columns:max-content 1fr;
+  gap:0.85rem 1.6rem;
+  align-items:baseline;
+}
+.node-meta .annot {
+  font-size:0.7rem;
+  letter-spacing:0.18em;
+}
+.node-meta .sub {
+  font-size:0.85rem;
+  line-height:1.55;
+}
+.node-row {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+}
