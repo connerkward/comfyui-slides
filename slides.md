@@ -85,7 +85,7 @@ layout: full
 layout: full
 ---
 
-<div class="chap"><div class="gbg"></div><div class="three-scene au au-2" data-preset="chap_low" style="position:absolute;top:3%;right:2%;width:38%;height:38%;z-index:2;"></div><div class="chap-n">02</div><div class="chap-body"><div class="chap-eye au au-1">section two</div><h1 class="chap-t au au-2">SETTING<br>UP</h1><div class="chap-hl au au-3"></div></div><div style="position:absolute;top:1.8rem;left:2.5rem;z-index:3;" class="au au-1"><div class="annot" style="color:var(--dim);">SYS-02 · INSTALLATION</div></div><div style="position:absolute;bottom:1.6rem;right:2.2rem;z-index:3;" class="au au-4"><div class="annot" style="color:var(--dim);">GROUND CREW REQUIRED</div></div></div>
+<div class="chap"><div class="gbg"></div><div class="three-scene au au-2" data-preset="cf_dogfight" style="position:absolute;top:3%;right:2%;width:38%;height:38%;z-index:2;"></div><div class="chap-n">02</div><div class="chap-body"><div class="chap-eye au au-1">section two</div><h1 class="chap-t au au-2">SETTING<br>UP</h1><div class="chap-hl au au-3"></div></div><div style="position:absolute;top:1.8rem;left:2.5rem;z-index:3;" class="au au-1"><div class="annot" style="color:var(--dim);">SYS-02 · INSTALLATION</div></div><div style="position:absolute;bottom:1.6rem;right:2.2rem;z-index:3;" class="au au-4"><div class="annot" style="color:var(--dim);">GROUND CREW REQUIRED</div></div></div>
 
 ---
 layout: full
