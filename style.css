@@ -1,68 +1,72 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Atkinson+Hyperlegible+Mono:ital,wght@0,200..800;1,200..800&family=BBH+Bartle&family=BBH+Hegarty&family=Noto+Sans+JP:wght@300..700&display=swap');
 
-/* ─── Tokens ─── */
+/* ─── Tokens — PUNKU BSOD blue + amber motorsport accent ─── */
 :root {
-  --bg:   #090a06;
-  --s:    #0f1108;
-  --p:    #161809;
-  --p2:   #1d200c;
-  --b:    #2a2e14;
-  --bhi:  #3a3f1c;
-  --dim:  #4a5028;
-  --mut:  #686e40;
-  --sub:  #888e58;
-  --tx:   #adb470;
-  --br:   #cac870;
-  --wh:   #e6da78;
-  --ac:   #c48a10;
-  --alo:  rgba(196,138,16,0.10);
-  --fd:   'Bebas Neue', cursive;
-  --fb:   'DM Mono', monospace;
+  --bg:   #0537ff;            /* BSOD background */
+  --s:    rgba(255,255,255,0.10);  /* faint grid lines / ghost numerals */
+  --p:    rgba(255,255,255,0.05);  /* card bg */
+  --p2:   rgba(255,255,255,0.10);
+  --b:    rgba(255,255,255,0.20);
+  --bhi:  rgba(255,255,255,0.50);
+  /* Hierarchy tiers — monotone white via opacity (no second hue, per punku) */
+  --dim:  rgba(255,255,255,0.38);  /* dimmest — micro IDs */
+  --mut:  rgba(255,255,255,0.58);  /* labels, hints, secondary annotations */
+  --sub:  rgba(255,255,255,0.78);  /* secondary body copy */
+  --tx:   #ffffff;                  /* primary body copy */
+  --br:   #ffffff;                  /* bright */
+  --wh:   #ffffff;                  /* whitest */
+  /* "Accent" stays white — emphasis comes from weight, scale, borders, italic */
+  --ac:   #ffffff;
+  --alo:  rgba(255,255,255,0.08);   /* low alpha white for tinted card bgs */
+  /* Display tiers */
+  --fhero: 'BBH Hegarty', 'BBH Bartle', 'Helvetica Neue', sans-serif;   /* main title (Hegarty) */
+  --fd:    'BBH Hegarty', 'BBH Bartle', 'Helvetica Neue', sans-serif;   /* all section / slide headings */
+  --fb:    'Atkinson Hyperlegible Mono', ui-monospace, monospace;       /* technical mono */
+  --fs:    '42dot Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --fjp:   'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
 }
+
+.ja { font-family: var(--fjp); font-weight: 300; letter-spacing: 0.18em; }
+.amp { font-family: var(--fb); font-style: italic; font-weight: 400; }
 
 /* ─── Base ─── */
 .slidev-layout {
   background: var(--bg) !important;
   color: var(--tx) !important;
-  font-family: var(--fb) !important;
+  font-family: var(--fs) !important;
   overflow: hidden !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
+.slidev-layout * { -webkit-font-smoothing: antialiased; }
 
-/* Organic grain */
+/* Subtle grain — punku is clean, keep it whisper-light */
 .slidev-layout::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px;
-  opacity: 0.06;
+  opacity: 0.035;
   pointer-events: none;
   z-index: 9998;
   mix-blend-mode: overlay;
 }
 
-/* Scan lines */
-.slidev-layout::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.022) 3px, rgba(0,0,0,0.022) 4px);
-  pointer-events: none;
-  z-index: 9997;
-}
-
 .slidev-layout.full { padding: 0 !important; }
 .slidev-layout h1 {
-  font-family: var(--fd) !important;
-  letter-spacing: 0.03em;
-  line-height: 0.88 !important;
+  font-family: var(--fd);
+  letter-spacing: -0.02em;
+  line-height: 0.86 !important;
   color: var(--wh) !important;
   font-weight: 400 !important;
   margin: 0;
 }
 .slidev-layout h2 {
-  font-family: var(--fd) !important;
-  letter-spacing: 0.03em;
+  font-family: var(--fd);
+  letter-spacing: -0.01em;
   color: var(--wh) !important;
   font-weight: 400 !important;
   margin: 0;
@@ -74,9 +78,24 @@
   font-size: 0.88em;
   color: var(--ac) !important;
   background: var(--alo) !important;
-  border: 1px solid rgba(212,112,10,0.22) !important;
+  border: 1px solid rgba(255,211,77,0.30) !important;
   border-radius: 0;
   padding: 0.05em 0.3em;
+}
+
+/* Inline-styled display elements default to 400 (BBH face only ships at 400) */
+[style*="font-family:var(--fd)"],
+[style*="font-family: var(--fd)"],
+[style*="font-family:var(--fhero)"],
+[style*="font-family: var(--fhero)"] {
+  font-weight: 400 !important;
+}
+
+/* Italic ampersand — punku signature */
+.amp {
+  font-family: var(--fb);
+  font-style: italic;
+  font-weight: 400;
 }
 
 /* ─── Color utils ─── */
@@ -86,79 +105,335 @@
 .br  { color: var(--br)  !important; }
 .wh  { color: var(--wh)  !important; }
 .dim { color: var(--dim) !important; }
-.gac { text-shadow: 0 0 40px rgba(212,112,10,0.60), 0 0 100px rgba(212,112,10,0.22); }
+.gac { text-shadow: 0 0 40px rgba(255,211,77,0.55), 0 0 100px rgba(255,211,77,0.22); }
+
+/* ─── Global slide number indicator ─── */
+.global-slide-num {
+  position: fixed;
+  top: 1.2rem;
+  left: 1.6rem;
+  z-index: 9999;
+  pointer-events: none;
+  font-family: var(--fb);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--wh);
+  opacity: 0.55;
+  font-weight: 350;
+}
 
 /* ─── Hairlines ─── */
 .hl    { height: 1px; background: var(--b); margin: 0.65rem 0 1rem; }
-@keyframes hla { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
-.hl-ac { height: 1px; background: var(--ac); opacity: 0.6; margin: 0.65rem 0 1rem; animation: hla 3.5s ease-in-out infinite; }
+@keyframes hla { 0%,100% { opacity:0.7; } 50% { opacity:1; } }
+.hl-ac { height: 1px; background: var(--ac); opacity: 0.85; margin: 0.65rem 0 1rem; animation: hla 3.5s ease-in-out infinite; }
 
-/* ─── Universal grid ─── */
-@keyframes gp  { 0%,100% { opacity:0.9;  } 50% { opacity:0.62; } }
-@keyframes gpl { 0%,100% { opacity:0.45; } 50% { opacity:0.26; } }
+/* ─── Subtle grid (suppressed — reads industrial, not blueprint) ─── */
+@keyframes gp  { 0%,100% { opacity:0.32; } 50% { opacity:0.18; } }
+@keyframes gpl { 0%,100% { opacity:0.16; } 50% { opacity:0.08; } }
 .gbg {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(var(--s) 1px, transparent 1px),
-    linear-gradient(90deg, var(--s) 1px, transparent 1px);
-  background-size: 52px 52px;
-  opacity: 0.9;
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 96px 96px;
+  opacity: 0.32;
   z-index: 0;
   pointer-events: none;
   animation: gp 20s ease-in-out infinite;
 }
-/* Lighter version for content slides */
 .gbg-lo {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(var(--s) 1px, transparent 1px),
-    linear-gradient(90deg, var(--s) 1px, transparent 1px);
-  background-size: 52px 52px;
-  opacity: 0.45;
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 96px 96px;
+  opacity: 0.18;
   z-index: 0;
   pointer-events: none;
   animation: gpl 26s ease-in-out infinite 4s;
 }
 
-/* ─── Slide wrapper ─── */
-.sw { position: relative; width: 100%; height: 100%; overflow: hidden; }
+/* ─── Slide wrapper + punku-style frame brackets on every slide ─── */
+.sw, .chap { position: relative; width: 100%; height: 100%; overflow: hidden; }
 
-/* ─── Ambient equipment glow — static warm hotspots that breathe ─── */
-@keyframes amb1 { 0%,100% { opacity:0.5; } 50% { opacity:1; } }
-@keyframes amb2 { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
-.sw::before {
+/* Strong white corner brackets — industrial frame, punku page treatment */
+.sw::before, .chap::before {
   content: '';
-  position: absolute; inset: 0;
+  position: absolute;
+  top: 22px; left: 22px;
+  right: 22px; bottom: 22px;
   background:
-    radial-gradient(ellipse at 8% 82%, rgba(196,138,16,0.07) 0%, transparent 32%),
-    radial-gradient(ellipse at 94% 12%, rgba(196,138,16,0.05) 0%, transparent 26%);
-  animation: amb1 18s ease-in-out infinite;
+    linear-gradient(#fff, #fff) top left     / 44px 2px no-repeat,
+    linear-gradient(#fff, #fff) top left     / 2px 44px no-repeat,
+    linear-gradient(#fff, #fff) top right    / 44px 2px no-repeat,
+    linear-gradient(#fff, #fff) top right    / 2px 44px no-repeat,
+    linear-gradient(#fff, #fff) bottom left  / 44px 2px no-repeat,
+    linear-gradient(#fff, #fff) bottom left  / 2px 44px no-repeat,
+    linear-gradient(#fff, #fff) bottom right / 44px 2px no-repeat,
+    linear-gradient(#fff, #fff) bottom right / 2px 44px no-repeat;
+  opacity: 0.85 !important;
+  pointer-events: none;
+  z-index: 4;
+  animation: none !important;
+}
+.sw::after { display: none; }
+
+/* ─── Chase composition — two wireframe cars + parallax ─── */
+.chase {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Both cars in pursuit (same direction). Chase car ahead-right (closer), trail car behind-left (smaller).
+   Parallax: trail car drifts SLOW, chase car drifts FAST in the same direction (depth illusion). */
+@keyframes chase-drift-trail {
+  0%   { transform: translate(-18px, 3px); }
+  50%  { transform: translate(18px, -3px); }
+  100% { transform: translate(-18px, 3px); }
+}
+@keyframes chase-drift-lead {
+  0%   { transform: translate(-46px, -4px) scale(1.0); }
+  50%  { transform: translate(46px, 4px) scale(1.02); }
+  100% { transform: translate(-46px, -4px) scale(1.0); }
+}
+@keyframes chase-pulse {
+  0%,100% { opacity: 0.95; }
+  50%     { opacity: 1; }
+}
+
+.chase {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.chase__car {
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 0 18px rgba(255,255,255,0.22));
+  will-change: transform;
+}
+
+/* Trail car (chasing) — further back, smaller, upper-left in the chase composition */
+.chase__car--trail {
+  width: 30%;
+  top: 16%;
+  right: 50%;
+  opacity: 0.7;
+  animation: chase-drift-trail 7s ease-in-out infinite;
+}
+
+/* Lead car (being chased) — closer, larger, foreground-right */
+.chase__car--lead {
+  width: 56%;
+  top: 12%;
+  right: -8%;
+  opacity: 1;
+  animation: chase-drift-lead 5s ease-in-out infinite, chase-pulse 5s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* Speed streaks — horizontal motion lines that pan continuously, more aggressive */
+@keyframes streak-pan {
+  from { background-position: 0 0; }
+  to   { background-position: -260px 0; }
+}
+.chase__streaks {
+  position: absolute;
+  inset: 16% -12% 18% -12%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 50px,
+    rgba(255,255,255,0.10) 50px,
+    rgba(255,255,255,0.10) 54px,
+    transparent 54px,
+    transparent 130px,
+    rgba(255,255,255,0.16) 130px,
+    rgba(255,255,255,0.16) 133px,
+    transparent 133px,
+    transparent 220px,
+    rgba(255,255,255,0.08) 220px,
+    rgba(255,255,255,0.08) 222px,
+    transparent 222px,
+    transparent 260px
+  );
+  background-size: 260px 100%;
+  animation: streak-pan 0.9s linear infinite;
+  opacity: 0.85;
   pointer-events: none;
   z-index: 1;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
-.sw::after {
+
+/* Reversing-parallax grid — pans right-to-left fast (cars go right) */
+@keyframes gbg-pan {
+  from { background-position: 0 0; }
+  to   { background-position: -480px 0; }
+}
+.gbg.gbg--pan {
+  animation: gbg-pan 4s linear infinite, gp 20s ease-in-out infinite;
+}
+
+/* Jump-pose ornament — used on chap dividers as a dramatic accent.
+   Animated with a subtle bob + faster horizontal travel. */
+@keyframes jump-bob {
+  0%,100% { transform: translate(0, 0) rotate(0deg); }
+  50%     { transform: translate(0, -10px) rotate(-1deg); }
+}
+.car-jump {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 18px rgba(255,255,255,0.25));
+  animation: jump-bob 4.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* Hero streaks — overlay across full slide behind/around the Three.js canvas */
+.chase__streaks--hero {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 70px,
+    rgba(255,255,255,0.06) 70px,
+    rgba(255,255,255,0.06) 73px,
+    transparent 73px,
+    transparent 180px,
+    rgba(255,255,255,0.10) 180px,
+    rgba(255,255,255,0.10) 182px,
+    transparent 182px,
+    transparent 320px
+  );
+  background-size: 320px 100%;
+  animation: streak-pan 1.1s linear infinite;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 60%, transparent 88%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 60%, transparent 88%);
+  pointer-events: none;
+}
+
+/* Three.js scene host */
+.three-chase, .three-scene {
+  position: absolute;
+  pointer-events: none;
+  overflow: hidden;
+}
+.three-chase canvas, .three-scene canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Full-bleed chase slide — title overlay sits in lower-left over a live 3D scene */
+.chase-slide { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.chase-slide h2 {
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-shadow: 0 0 22px rgba(5,55,255,0.75); /* keep huge title legible over busy wireframe */
+}
+/* Soft gradient veil from bottom-left so the title pops against the wireframe */
+.chase-slide::before {
   content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 78% 78%, rgba(196,138,16,0.055) 0%, transparent 24%);
-  animation: amb2 24s ease-in-out infinite 7s;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 22% 88%, rgba(5,55,255,0.78) 0%, rgba(5,55,255,0.30) 35%, transparent 65%);
+  z-index: 2;
   pointer-events: none;
-  z-index: 1;
 }
-/* chap glow — matches sw breathing but offset */
-.chap::before {
+
+/* ─── 4-frame chase index — recon-monitor grid ─── */
+.four-frames {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 16px;
+  min-height: 0;
+}
+.frame {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--bhi);
+  background: rgba(255,255,255,0.025);
+  isolation: isolate;
+}
+/* CCTV-style corner brackets inside each frame */
+.frame::before, .frame::after {
   content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse at 92% 88%, rgba(196,138,16,0.06) 0%, transparent 28%),
-    radial-gradient(ellipse at 6% 10%, rgba(196,138,16,0.04) 0%, transparent 22%);
-  animation: amb1 22s ease-in-out infinite 5s;
+  position: absolute;
   pointer-events: none;
+  z-index: 4;
+  width: 18px; height: 18px;
+}
+.frame::before {
+  top: 6px; left: 6px;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+.frame::after {
+  bottom: 30px; right: 6px;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+.frame img {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  top: 0; left: 0;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.18));
   z-index: 1;
 }
-/* Ambient glow toggle — uncomment to disable */
+.frame img.frame__overlay { z-index: 2; }
+.frame__scene {
+  position: absolute;
+  inset: 0 0 28px 0; /* leave room for caption strip */
+  z-index: 1;
+}
+.frame figcaption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 10px;
+  font-family: var(--fb);
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0,0,0,0.18);
+  border-top: 1px solid var(--b);
+  z-index: 3;
+}
+.frame__id { color: var(--mut); }
+
+/* Subtle scan-pulse on frames so the grid feels live, not static */
+@keyframes frame-pulse {
+  0%,100% { box-shadow: inset 0 0 0 0 rgba(255,255,255,0); }
+  50%     { box-shadow: inset 0 0 24px rgba(255,255,255,0.05); }
+}
+.frame { animation: frame-pulse 5s ease-in-out infinite; }
+.frame:nth-child(2) { animation-delay: 1.2s; }
+.frame:nth-child(3) { animation-delay: 2.4s; }
+.frame:nth-child(4) { animation-delay: 3.6s; }
+
+/* Ambient glow — disabled by default, kept for parity */
 .sw::before, .sw::after, .chap::before { opacity: 0 !important; }
 
-/* ─── Slide inner — with corner brackets ─── */
+/* ─── Slide inner — strong industrial corner brackets ─── */
 .si {
   position: relative;
   z-index: 2;
@@ -174,27 +449,26 @@
   top: 1.1rem; left: 1.1rem;
   right: 1.1rem; bottom: 1.1rem;
   background:
-    linear-gradient(var(--bhi), var(--bhi)) top left     / 28px 1px no-repeat,
-    linear-gradient(var(--bhi), var(--bhi)) top left     / 1px 28px no-repeat,
-    linear-gradient(var(--bhi), var(--bhi)) top right    / 28px 1px no-repeat,
-    linear-gradient(var(--bhi), var(--bhi)) top right    / 1px 28px no-repeat,
-    linear-gradient(var(--bhi), var(--bhi)) bottom left  / 28px 1px no-repeat,
-    linear-gradient(var(--bhi), var(--bhi)) bottom left  / 1px 28px no-repeat,
-    linear-gradient(var(--bhi), var(--bhi)) bottom right / 28px 1px no-repeat,
-    linear-gradient(var(--bhi), var(--bhi)) bottom right / 1px 28px no-repeat;
-  opacity: 0.6;
+    linear-gradient(var(--wh), var(--wh)) top left     / 36px 2px no-repeat,
+    linear-gradient(var(--wh), var(--wh)) top left     / 2px 36px no-repeat,
+    linear-gradient(var(--wh), var(--wh)) top right    / 36px 2px no-repeat,
+    linear-gradient(var(--wh), var(--wh)) top right    / 2px 36px no-repeat,
+    linear-gradient(var(--wh), var(--wh)) bottom left  / 36px 2px no-repeat,
+    linear-gradient(var(--wh), var(--wh)) bottom left  / 2px 36px no-repeat,
+    linear-gradient(var(--wh), var(--wh)) bottom right / 36px 2px no-repeat,
+    linear-gradient(var(--wh), var(--wh)) bottom right / 2px 36px no-repeat;
+  opacity: 0.85;
   pointer-events: none;
   z-index: 0;
-  animation: bk 12s ease-in-out infinite;
 }
-@keyframes bk { 0%,100% { opacity:0.6; } 50% { opacity:0.18; } }
 
 /* ─── Ghost hangar letter ─── */
 .ghost {
   position: absolute;
-  font-family: var(--fd);
+  font-family: var(--fhero);
+  font-weight: 400;
   line-height: 0.82;
-  color: var(--s);
+  color: rgba(255,255,255,0.09);
   user-select: none;
   pointer-events: none;
   z-index: 1;
@@ -202,12 +476,12 @@
 }
 
 /* ─── Slide header ─── */
-.stitle { font-family: var(--fd); font-size: 2.5rem; letter-spacing: 0.03em; color: var(--wh); line-height: 1; }
-.stag   { font-size: 0.55rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--mut); }
+.stitle { font-family: var(--fd); font-weight: 400; font-size: 2.6rem; letter-spacing: -0.01em; color: var(--wh); line-height: 1; }
+.stag   { font-size: 0.55rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--mut); font-family: var(--fb); }
 
 /* ─── Slide number ─── */
 @keyframes rfk { 0%,88%,100% { opacity:1; } 89% { opacity:0.15; } 90% { opacity:0.9; } 93% { opacity:0.55; } 94% { opacity:1; } }
-.snum { position: absolute; top: 1.8rem; right: 2.4rem; font-family: var(--fd); font-size: 0.75rem; color: var(--dim); letter-spacing: 0.14em; z-index: 3; animation: rfk 16s linear infinite; }
+.snum { position: absolute; top: 1.8rem; right: 2.4rem; font-family: var(--fb); font-size: 0.72rem; color: var(--dim); letter-spacing: 0.22em; z-index: 3; animation: rfk 16s linear infinite; text-transform: uppercase; }
 
 /* ─── Node background ─── */
 .nbg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
@@ -217,23 +491,22 @@
 .eg  { stroke-dasharray: 16 10; animation: ef 8s linear infinite; }
 .eg:nth-child(2n) { animation-delay: -4s; animation-duration: 12s; }
 .eg:nth-child(3n) { animation-delay: -2s; animation-duration: 6s; }
-@keyframes nd { 0%,100% { opacity:.25; } 50% { opacity:.70; } }
+@keyframes nd { 0%,100% { opacity:.30; } 50% { opacity:.75; } }
 @keyframes ef { from { stroke-dashoffset: 52; } to { stroke-dashoffset: 0; } }
-/* Secondary wire variants — slower, different dash rhythm */
 .eg2 { stroke-dasharray: 8 18; animation: ef 14s linear infinite; }
 .eg3 { stroke-dasharray: 4 22; animation: ef 20s linear infinite reverse; }
 
 /* ─── Cards ─── */
 .card    { background: var(--p); border: 1px solid var(--b); border-radius: 0; padding: 1rem 1.2rem; }
-.card-ac { border-left: 2px solid var(--ac); background: linear-gradient(120deg, var(--p) 0%, rgba(212,112,10,0.04) 100%); }
+.card-ac { border-left: 2px solid var(--ac); background: var(--p2); }
 .card-hi { background: var(--p2); border-color: var(--bhi); }
 
 /* ─── Tags ─── */
-.tag    { display:inline-block; font-family:var(--fb); font-size:0.52rem; letter-spacing:0.16em; text-transform:uppercase; padding:0.2em 0.65em; border-radius:0; color:var(--mut); background:var(--s); border:1px solid var(--b); }
-.tag-ac { color:var(--ac); background:var(--alo); border-color:rgba(212,112,10,0.3); }
+.tag    { display:inline-block; font-family:var(--fb); font-size:0.52rem; letter-spacing:0.22em; text-transform:uppercase; padding:0.25em 0.7em; border-radius:0; color:var(--mut); background:transparent; border:1px solid var(--b); }
+.tag-ac { color:var(--ac); background:var(--alo); border-color:rgba(255,211,77,0.45); }
 
 /* ─── File paths ─── */
-.path { font-family:var(--fb); font-size:0.78em; color:var(--ac); background:var(--alo); border:1px solid rgba(212,112,10,0.2); border-radius:0; padding:0.22em 0.6em; display:block; margin:0.25rem 0; line-height:1.9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.path { font-family:var(--fb); font-size:0.78em; color:var(--ac); background:var(--alo); border:1px solid rgba(255,211,77,0.30); border-radius:0; padding:0.22em 0.6em; display:block; margin:0.25rem 0; line-height:1.9; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:0.04em; }
 
 /* ─── Grids ─── */
 .g2 { display:grid; grid-template-columns:1fr 1fr;     gap:1.1rem; }
@@ -242,35 +515,81 @@
 /* ─── Chapter (bottom-left anchored) ─── */
 .chap { position:relative; width:100%; height:100%; overflow:hidden; }
 .chap-n {
-  font-family: var(--fd);
-  font-size: 34rem;
+  font-family: var(--fhero);
+  font-weight: 400;
+  font-size: 36rem;
   line-height: 0.78;
-  color: var(--s);
+  color: rgba(255,255,255,0.10);
   position: absolute;
   right: -5rem; bottom: -8rem;
   user-select: none;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   z-index: 0;
 }
 .chap-body { position:absolute; bottom:3.5rem; left:4rem; z-index:2; }
 .chap-eye  { font-family:var(--fb); font-size:0.56rem; letter-spacing:0.32em; text-transform:uppercase; color:var(--ac); margin-bottom:0.9rem; }
-.chap-t    { font-family:var(--fd) !important; font-size:8rem !important; line-height:0.84 !important; color:var(--wh) !important; }
+.chap-t    { font-family:var(--fd) !important; font-weight:400 !important; font-size:7.5rem !important; line-height:0.84 !important; color:var(--wh) !important; letter-spacing:-0.02em !important; }
 .chap-hl   { width:52px; height:2px; background:var(--ac); margin:1.2rem 0 0; }
 
-/* ─── Steps pipeline — tactical checklist ─── */
+/* ─── Steps pipeline ─── */
 .steps    { display:flex; align-items:stretch; }
-.step     { flex:1; background:var(--p); border:1px solid var(--b); border-top:2px solid var(--bhi); border-radius:0; padding:0.9rem 0.6rem; text-align:center; font-size:0.72rem; line-height:1.7; color:var(--sub); }
+.step     { flex:1; background:var(--p); border:1px solid var(--b); border-top:2px solid var(--bhi); border-radius:0; padding:0.9rem 0.6rem; text-align:center; font-size:0.72rem; line-height:1.7; color:var(--sub); font-family:var(--fb); letter-spacing:0.04em; }
 .step-arr { color:var(--dim); font-size:0.85rem; padding:0 0.3rem; display:flex; align-items:center; flex-shrink:0; }
-.step-n   { font-family:var(--fd); font-size:1.9rem; color:var(--ac); line-height:1; display:block; }
-/* Active step */
-@keyframes stb { 0%,100% { opacity:1; box-shadow:none; } 50% { opacity:0.82; box-shadow:inset 0 0 12px rgba(196,138,16,0.06); } }
+.step-n   { font-family:var(--fd); font-weight:400; font-size:2rem; color:var(--wh); line-height:1; display:block; }
+@keyframes stb { 0%,100% { opacity:1; box-shadow:none; } 50% { opacity:0.85; box-shadow:inset 0 0 12px rgba(255,211,77,0.14); } }
 .step-hi  { border-top-color: var(--ac); background: var(--p2); animation: stb 4s ease-in-out infinite; }
 
-/* ─── Warn stripe ─── */
-.warn-stripe { height:4px; background:repeating-linear-gradient(-45deg, var(--ac) 0, var(--ac) 5px, transparent 5px, transparent 10px); opacity:0.55; }
+/* ─── Warn stripe — restyled as soft punku rule ─── */
+.warn-stripe { height:4px; background:repeating-linear-gradient(-45deg, var(--ac) 0, var(--ac) 5px, transparent 5px, transparent 10px); opacity:0.7; }
 
-/* ─── Tactical annotation ─── */
-.annot { font-family:var(--fb); font-size:0.5rem; letter-spacing:0.26em; text-transform:uppercase; color:var(--dim); }
+/* ─── Microtext / annotations — thin mono, punku-style ─── */
+.annot { font-family:var(--fb); font-size:0.55rem; font-weight:350; letter-spacing:0.26em; text-transform:uppercase; color:var(--dim); }
+.annot .ja { font-family:var(--fjp); font-weight:300; letter-spacing:0.18em; }
+
+/* Barcode block — bottom-right corner of slide */
+.micro-bc {
+  position: absolute;
+  bottom: 1.2rem; right: 1.6rem;
+  display: flex; align-items: center; gap: 0.7rem;
+  z-index: 4;
+  color: var(--mut);
+  font-family: var(--fb);
+  font-size: 0.55rem;
+  font-weight: 350;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.micro-bc svg { display: block; flex: none; }
+.micro-bc__id  { color: var(--sub); letter-spacing: 0.28em; }
+.micro-bc__ja  { font-family: var(--fjp); font-weight: 300; letter-spacing: 0.18em; color: var(--dim); text-transform: none; font-size: 0.62rem; }
+
+/* Section marker — bottom-left, "§ 00 / COVER · QHAWAY · 表紙" style */
+.micro-sec {
+  position: absolute;
+  bottom: 1.2rem; left: 1.6rem;
+  z-index: 4;
+  color: var(--mut);
+  font-family: var(--fb);
+  font-size: 0.55rem;
+  font-weight: 350;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.micro-sec .ja { font-family: var(--fjp); font-weight: 300; text-transform: none; font-size: 0.62rem; letter-spacing: 0.18em; }
+
+/* Pretitle — multilingual breadcrumb above hero */
+.micro-pre {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-family: var(--fb);
+  font-size: 0.62rem;
+  font-weight: 350;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--sub);
+  margin-bottom: 0.6rem;
+}
+.micro-pre .ja { font-family: var(--fjp); font-weight: 300; text-transform: none; letter-spacing: 0.18em; color: var(--mut); }
+.micro-pre .sep { color: var(--dim); }
 
 /* ─── Typewriter ─── */
 @keyframes tl { from { opacity:0; } to { opacity:1; } }
@@ -286,13 +605,10 @@
 .au-5 { animation-delay:0.58s; }
 
 /* ─── Mechanical monitor slide transition ─── */
-/* Usage in frontmatter: transition: mech-fwd | mech-bwd */
-/* Forward: new slide drives in from right, old punches out left */
 .mech-fwd-enter-active { transition: transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease; }
 .mech-fwd-leave-active { transition: transform 0.38s cubic-bezier(0.64,0,0.78,0), opacity 0.28s ease; position: absolute !important; width: 100%; }
 .mech-fwd-enter-from   { transform: translateX(100%); opacity: 0.4; }
 .mech-fwd-leave-to     { transform: translateX(-12%); opacity: 0; }
-/* Backward: new slide drives in from left, old punches out right */
 .mech-bwd-enter-active { transition: transform 0.52s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease; }
 .mech-bwd-leave-active { transition: transform 0.38s cubic-bezier(0.64,0,0.78,0), opacity 0.28s ease; position: absolute !important; width: 100%; }
 .mech-bwd-enter-from   { transform: translateX(-100%); opacity: 0.4; }
