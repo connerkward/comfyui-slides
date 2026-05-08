@@ -29,13 +29,13 @@ Forward direction is **−Y**. Lead car at world origin; pursuit cars trail behi
 
 ## Helicopter attitude
 
-Helis are pitched **−8°** (nose down) and banked **±6°** (opposite roll for each) so they read as actually flying forward, not just translating in space. This is set on the empty, so the rotor spin animation on the children inherits the orientation.
+Helis are pitched **−10°** (nose down) and banked **±5°** (opposite roll for each) so they read as actually flying forward, not just translating. Held static (no wobble) — at 100 km/h cruise, real helicopters hold attitude.
 
 Combined with the per-vehicle color, the diffusion model has an unambiguous mapping from pixel value → object identity → facing direction.
 
 ## Motion reference
 
-48 lamp posts spaced every 24 units along Y, both sides at x=±14, with bright yellow emissive heads. They're stationary in world space, so they scroll past the camera and the chase, giving clear parallax cues.
+84 lamp posts spaced every 18 units along Y from y=−280 to y=+80, both sides at x=±14, with bright yellow emissive heads. They're stationary in world space, so they whip past the camera and the chase at the chase's full ground speed — instant visual cue that the world is moving fast.
 
 ## Animation
 
@@ -83,3 +83,31 @@ In Blender, with `chase_scene.blend` open:
   ```
 - Install the add-on in Blender via the Blender Lab extensions repository at `https://lab.blender.org/`, enable it, and confirm the TCP socket is up on `127.0.0.1:9876`.
 - Restart the Claude Code session after enabling the add-on so the `mcp__blender__*` tool schemas load.
+
+## Source models
+
+Both GLBs are imported from a sibling repo (not vendored here):
+
+- `~/dev/v2v-slides/public/helicopter.glb`
+- `~/dev/v2v-slides/public/police-car.glb`
+
+If you re-build the scene from scratch, those paths are hardcoded in the import step.
+
+## Gotchas worth remembering
+
+- **Indicator parenting**: always set `child.matrix_parent_inverse.identity()` immediately after `child.parent = empty`, then assign `child.location = local_offset`. If you instead use the standard `inv(empty.matrix_world)` pattern, the parent-inverse encodes the empty's transform *at parent-time*; later repositioning of the empty leaves the children at a stale relative offset and they visibly detach from the body.
+- **Camera clip range**: Blender's default `clip_end` is 100 (and someone — possibly the official Blender add-on default — sets it on import). Long ground planes get sliced into a fake horizon line at the clip distance. Bump to `50000` whenever working with a long road.
+- **Sky type rename in Blender 5.x**: `NISHITA` was renamed to `MULTIPLE_SCATTERING`; `dust_density` → `aerosol_density`. Old code copied from 4.x docs will throw.
+- **No FFmpeg in `image_settings.file_format` in Blender 5.x**: render PNG sequence and stitch with system `ffmpeg` (snippet above). The `Render Animation` button used to write MP4 directly; no longer.
+
+## Build history
+
+This scene was built iteratively via the Blender MCP. Notable inflection points if you `git log blender/`:
+
+1. Initial import of GLBs and naive grouping (children offset from empties because `matrix_world` was read before the depsgraph updated).
+2. Rebuilt grouping with `view_layer.update()` between location-set and matrix read.
+3. Multiple iterations on color coding (5 distinct hues → grouped (3-color) → back to 5 distinct).
+4. Camera move iterated from a 5-key arc → side pan → pure-Y straight line drone follow.
+5. World shader iterated from flat emission → vertical gradient → distance-faded ground → finally `MULTIPLE_SCATTERING` atmospheric sky with proper sun.
+6. Indicator drift bug found and fixed by switching to `matrix_parent_inverse.identity()`.
+7. **Final**: full nuke and rebuild at realistic 108 km/h chase speed with proper rotor RPMs and static heli attitude.
