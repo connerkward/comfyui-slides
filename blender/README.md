@@ -25,6 +25,11 @@ Forward direction is **−Y**. Lead car at world origin; pursuit cars trail behi
 
 - **Cars** — bright **white** emissive bar across the front grill, dim **red** bar across the rear.
 - **Helicopters** — emissive **cyan** nose tip + emissive cyan cockpit (`vidrio` mesh); red strobe at tail.
+- All indicators are parented to their vehicle empty with `matrix_parent_inverse.identity()` so they lock to the empty's transform — re-positioning the empty does not desync the children. (An earlier bug used a stale parent-inverse and the bars drifted off-vehicle.)
+
+## Helicopter attitude
+
+Helis are pitched **−8°** (nose down) and banked **±6°** (opposite roll for each) so they read as actually flying forward, not just translating in space. This is set on the empty, so the rotor spin animation on the children inherits the orientation.
 
 Combined with the per-vehicle color, the diffusion model has an unambiguous mapping from pixel value → object identity → facing direction.
 
