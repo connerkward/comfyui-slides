@@ -1,6 +1,2 @@
-node_modules/
-dist/
-.DS_Store
+*.blend1
 .playwright-mcp/
-v2v-*.png
-qa-*.png
