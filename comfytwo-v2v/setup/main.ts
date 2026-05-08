@@ -19,10 +19,17 @@ function loadThree() {
 }
 
 const glbCache = new Map<string, Promise<any>>()
+function resolveAssetUrl(src: string): string {
+  // Honor Vite/Slidev's base path so /police-car.glb resolves under /comfytwo/ on Pages.
+  if (/^https?:\/\//i.test(src)) return src
+  const base = (import.meta as any).env?.BASE_URL ?? '/'
+  return base.replace(/\/$/, '') + (src.startsWith('/') ? src : '/' + src)
+}
 function loadWireGLB(THREE: any, GLTFLoader: any, src: string): Promise<any> {
-  if (!glbCache.has(src)) {
-    glbCache.set(src, new Promise((resolve, reject) => {
-      new GLTFLoader().load(src, (gltf: any) => {
+  const url = resolveAssetUrl(src)
+  if (!glbCache.has(url)) {
+    glbCache.set(url, new Promise((resolve, reject) => {
+      new GLTFLoader().load(url, (gltf: any) => {
         const group = new THREE.Group()
         const skip = /Lights|Siren|Plane/i
         gltf.scene.traverse((n: any) => {
@@ -49,7 +56,7 @@ function loadWireGLB(THREE: any, GLTFLoader: any, src: string): Promise<any> {
       }, undefined, reject)
     }))
   }
-  return glbCache.get(src)!
+  return glbCache.get(url)!
 }
 
 type Vec3 = [number, number, number]
