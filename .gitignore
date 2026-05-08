@@ -3,3 +3,4 @@ dist/
 .DS_Store
 .playwright-mcp/
 v2v-*.png
+qa-*.png

@@ -1,0 +1,91 @@
+name: Build and deploy slides to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build comfyone (outpainting)
+        working-directory: comfyone-outpaint
+        run: |
+          npm install
+          npx slidev build --base /comfyone/ --out ../dist/comfyone slides.md
+
+      - name: Build comfytwo (v2v)
+        working-directory: comfytwo-v2v
+        run: |
+          npm install
+          npx slidev build --base /comfytwo/ --out ../dist/comfytwo slides.md
+
+      - name: Generate landing index
+        run: |
+          cat > dist/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en"><head>
+          <meta charset="utf-8"/>
+          <meta name="viewport" content="width=device-width,initial-scale=1"/>
+          <title>slides.ward.run</title>
+          <style>
+            :root { --bg:#0537ff; --fg:#fff; --dim:rgba(255,255,255,0.55); --b:rgba(255,255,255,0.18); }
+            html,body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: ui-monospace, "JetBrains Mono", "Atkinson Hyperlegible Mono", monospace; }
+            body { min-height:100vh; display:flex; flex-direction:column; padding:4rem 3rem; box-sizing:border-box; }
+            header { font-size:0.7rem; letter-spacing:0.26em; text-transform:uppercase; color:var(--dim); margin-bottom:0.6rem; }
+            h1 { font-family: "BBH Hegarty", "Bartle", system-ui, sans-serif; font-size:5rem; line-height:0.9; letter-spacing:-0.03em; margin:0 0 3rem; font-weight:400; }
+            ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0; }
+            li { border-top:1px solid var(--b); }
+            li:last-child { border-bottom:1px solid var(--b); }
+            a { display:flex; align-items:baseline; gap:1.5rem; padding:1.4rem 0; text-decoration:none; color:var(--fg); }
+            a:hover .num { color:var(--fg); }
+            .num { font-size:2.4rem; min-width:3rem; color:var(--dim); }
+            .title { font-size:1.3rem; letter-spacing:0.04em; }
+            .meta { margin-left:auto; font-size:0.75rem; letter-spacing:0.18em; color:var(--dim); }
+            footer { margin-top:auto; font-size:0.65rem; letter-spacing:0.18em; color:var(--dim); }
+          </style></head>
+          <body>
+            <header>FIELD MANUAL · INDEX</header>
+            <h1>slides.ward.run</h1>
+            <ul>
+              <li><a href="/comfyone/"><span class="num">01</span><span class="title">COMFYONE · OUTPAINTING</span><span class="meta">DECK 01</span></a></li>
+              <li><a href="/comfytwo/"><span class="num">02</span><span class="title">COMFYTWO · HYBRID VIDEO PURSUIT</span><span class="meta">DECK 02</span></a></li>
+            </ul>
+            <footer>WARD.RUN · TRANSMISSION OPEN</footer>
+          </body></html>
+          HTML
+
+      - name: Add CNAME
+        run: echo "slides.ward.run" > dist/CNAME
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
