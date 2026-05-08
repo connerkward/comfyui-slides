@@ -123,3 +123,65 @@ curl -sI https://slides.ward.run/ | head -3
 ## Old comfyui-slides URL
 
 The repo was renamed from `comfyui-slides` to `slides`. GitHub redirects `https://github.com/connerkward/comfyui-slides` → `https://github.com/connerkward/slides` automatically. Anyone who had bookmarked the old URL will get there.
+
+## Post-launch fixes (2026-05-07)
+
+After the initial setup landed but before everything was live, three issues had to be solved.
+
+### 1. Cloudflare DNS record creation without an API token
+
+`slides.ward.run` couldn't be added through the local CLI — no API token in the shell, no `wrangler` installed, and the Cloudflare MCP tool exposes accounts/D1/KV/R2/Workers but **not DNS records**. Workaround: drive Chrome via `claude-in-chrome` (the user's authenticated browser session), navigate to `dash.cloudflare.com`, and call the dashboard's same-origin API from page context. This avoids CORS:
+
+```js
+// From the Cloudflare dashboard tab — uses the user's session cookies.
+const z = await fetch('/api/v4/zones?name=ward.run', {credentials:'include'}).then(r=>r.json());
+const zoneId = z.result[0].id;
+await fetch(`/api/v4/zones/${zoneId}/dns_records`, {
+  method: 'POST',
+  credentials: 'include',
+  headers: {'content-type': 'application/json'},
+  body: JSON.stringify({
+    type: 'CNAME',
+    name: 'slides',
+    content: 'connerkward.github.io',
+    ttl: 1,
+    proxied: false
+  })
+});
+```
+
+DNS propagated to public resolvers in ~5–7 minutes.
+
+### 2. GLB models 404 under the `/comfytwo/` base path
+
+The Three.js scene presets referenced models with hard-coded absolute paths:
+
+```ts
+{ src: '/police-car.glb', ... }
+```
+
+Locally that resolves to `localhost:3030/police-car.glb` — fine. On Pages with `--base /comfytwo/`, the page is served at `slides.ward.run/comfytwo/` but the GLB requests still went to `slides.ward.run/police-car.glb` (404). Vite rewrites `/foo.png` references in HTML/CSS but **does not rewrite string literals inside JS modules**.
+
+Fix in `comfytwo-v2v/setup/main.ts`:
+
+```ts
+function resolveAssetUrl(src: string): string {
+  if (/^https?:\/\//i.test(src)) return src
+  const base = (import.meta as any).env?.BASE_URL ?? '/'
+  return base.replace(/\/$/, '') + (src.startsWith('/') ? src : '/' + src)
+}
+```
+
+Wrap GLB loads (and any other JS-string asset paths) in this. `import.meta.env.BASE_URL` is set by Vite to whatever `--base` was passed at build time.
+
+### 3. wrangler installed for next time
+
+`npm install -g wrangler` so future Cloudflare automation has a CLI alternative to the dashboard-API trick. Wrangler still doesn't manage DNS records directly, but it's useful for Pages, Workers, KV, etc.
+
+## Quick reference
+
+- Live: https://slides.ward.run/
+- Repo: https://github.com/connerkward/slides
+- Pages config: `gh api repos/connerkward/slides/pages`
+- Workflow runs: `gh run list --repo connerkward/slides`
+- DNS record: dashboard → ward.run → DNS → Records → `slides` (CNAME → connerkward.github.io, DNS only)
