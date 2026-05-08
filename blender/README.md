@@ -40,9 +40,11 @@ Combined with the per-vehicle color, the diffusion model has an unambiguous mapp
 ## Animation
 
 - Frame range **1–120** at **30 fps** (4-second clip).
-- All five vehicles drive **−Y** at constant velocity (LINEAR), 55 units total over the clip.
-- Helicopter rotors (`helice 1` main, `helice 2` tail) spin LINEAR over the clip.
-- Camera animation: **2 keyframes, single-axis straight line**. Start `(0, 90, 55)` → end `(0, 60, 55)`. Drone moves slower than the chase (30 vs 55 units), so chase pulls visibly forward in frame and the road streams under the camera. Track-To constraint locked on the lead car keeps framing stable. Lens 35 mm.
+- **Scale**: car ≈ 5 m long modelled at ≈ 10 units → **1 unit ≈ 0.5 m**.
+- **Chase speed**: −240 units in Y over the clip = **60 u/s ≈ 30 m/s ≈ 108 km/h** — real highway-pursuit pace. LINEAR interpolation, constant velocity (real chase footage shows cars driving straight, not weaving).
+- **Helicopter attitude**: held static at pitch −10° (nose-down forward flight), bank ±5° (opposite roll between A and B). No wobble — at cruise speed real helicopters hold attitude.
+- **Rotors**: main rotor 27 revolutions per clip ≈ **405 rpm**; tail rotor 120 revolutions per clip ≈ **1800 rpm** — actual operational speeds.
+- **Camera**: 2 LINEAR keyframes from `(0, 90, 55)` → `(0, 90 − 0.85·240, 55) = (0, −114, 55)`. Camera tracks at 85 % of chase speed, so chase pulls ~36 units ahead through the clip and the world (lamp posts, road) streams past the camera at high speed. Track-To on the lead car keeps the framing locked. Lens 35 mm, clip_end 50000.
 
 ## World / lighting
 
