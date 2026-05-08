@@ -71,9 +71,8 @@ jobs:
           </body></html>
           HTML
 
-      # CNAME temporarily disabled — re-enable once Cloudflare DNS is in place.
-      # - name: Add CNAME
-      #   run: echo "slides.ward.run" > dist/CNAME
+      - name: Add CNAME
+        run: echo "slides.ward.run" > dist/CNAME
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
